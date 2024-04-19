@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApiExample.Web", "RestApiExample.Web\RestApiExample.Web.csproj", "{3D4F9DEC-A980-4702-A9DE-121225F5AD0D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D4F9DEC-A980-4702-A9DE-121225F5AD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D4F9DEC-A980-4702-A9DE-121225F5AD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D4F9DEC-A980-4702-A9DE-121225F5AD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D4F9DEC-A980-4702-A9DE-121225F5AD0D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
