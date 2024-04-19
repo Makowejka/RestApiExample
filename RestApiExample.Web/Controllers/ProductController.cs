@@ -17,14 +17,14 @@ public class ProductController : Controller
     // GET api/<ProductController>
     [HttpGet]
     [Route("api/[controller]/GetProducts")]
-
     public IActionResult Get()
     {
         ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
+        
         try
         {
             IEnumerable<ProductModel> data = _db.GetProducts();
-
+            
             if (!data.Any())
             {
                 type = ApiResponse.ResponseType.NotFound;
@@ -40,14 +40,14 @@ public class ProductController : Controller
 
     // GET api/<ProductController>/5
     [HttpGet]
-    [Route("api/[controller]/GetProductById/{id}")]
-
+    [Route("api/[controller]/GetProductById/{id:int}")]
     public IActionResult Get(int id)
     {
         ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
+        
         try
         {
-            ProductModel data = _db.GetProductById(id);
+            var data = _db.GetProductById(id);
 
             if (data == null)
             {
@@ -60,60 +60,62 @@ public class ProductController : Controller
         {
             return BadRequest(ResponseHandler.GetExceptionResponse(ex));
         }
+    }
 
-        // POST api/api/<ProductController>
-        [HttpPost]
-        [Route("api/[controller]/SaveOrder")]
-
-        IActionResult Post([FromBody] OrderModel model)
+    // POST api/api/<ProductController>
+    [HttpPost]
+    [Route("api/[controller]/SaveOrder")]
+    IActionResult Post([FromBody] OrderModel model)
+    {
+        try
         {
-            try
-            {
-                ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-                _db.SaveOrder(model);
-                return Ok(ResponseHandler.GetAppResponse(type, model));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
-
-            }
+            ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
+            
+            _db.SaveOrder(model);
+            
+            return Ok(ResponseHandler.GetAppResponse(type, model));
         }
-
-        // PUT api/<ProductController>/5
-        [HttpPut]
-        [Route("api/[controller]/UpdateOrder")]
-
-        IActionResult Put(int id, [FromBody] OrderModel model)
+        catch (Exception ex)
         {
-            try
-            {
-                ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-                _db.SaveOrder(model);
-                return Ok(ResponseHandler.GetAppResponse(type, model));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
-
-            }
-        }
-
-        // DELETE api/<ProductController>/5
-        [HttpDelete]
-        [Route("api/[controller]/DeleteeOrder/{id}")]
-
-        IActionResult Delete(int id)
-        {
-            try
-            {
-                ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-                _db.DeleteOrder(id);
-                return Ok(ResponseHandler.GetAppResponse(type, "Delete Sucessfully"));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ResponseHandler.GetExceptionResponse(ex));
-            }
+            return BadRequest(ResponseHandler.GetExceptionResponse(ex));
         }
     }
+
+    // PUT api/<ProductController>/5
+    [HttpPut]
+    [Route("api/[controller]/UpdateOrder/{id:int}")]
+    IActionResult Put(int id, [FromBody] OrderModel model)
+    {
+        try
+        {
+            ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
+            
+            _db.SaveOrder(model);
+            
+            return Ok(ResponseHandler.GetAppResponse(type, model));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+        }
+    }
+
+    // DELETE api/<ProductController>/5
+    [HttpDelete]
+    [Route("api/[controller]/DeleteeOrder/{id}")]
+    IActionResult Delete(int id)
+    {
+        try
+        {
+            ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
+            
+            _db.DeleteOrder(id);
+            
+            return Ok(ResponseHandler.GetAppResponse(type, "Delete Sucessfully"));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+        }
+    }
+}

@@ -14,12 +14,14 @@ public class ResponseHandler
     {
         ApiResponse response;
 
-        response = new ApiResponse(ResponseData = contract);
+        response = new ApiResponse();
+
         switch (type)
         {
-            case ApiResponse.ResponseType.Success :
+            case ApiResponse.ResponseType.Success:
                 response.Code = "0";
                 response.Message = "Success";
+                response.ResponseData = contract;
                 break;
 
             case ApiResponse.ResponseType.NotFound:
@@ -30,5 +32,4 @@ public class ResponseHandler
 
         return response;
     }
-
 }
