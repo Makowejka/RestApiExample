@@ -64,25 +64,26 @@ public class ProductController : Controller
 
     // POST api/api/<ProductController>
     [HttpPost]
-    IActionResult Post()
+    [Route("api/[controller]/SaveOrder")]
+    public IActionResult Post([FromBody] OrderModel model)
     {
         try
         {
             ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-
-
-            return Ok();
+            _db.SaveOrder(model);
+            return Ok(ResponseHandler.GetAppResponse(type, model));
         }
         catch (Exception ex)
         {
             return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+
         }
     }
 
     // PUT api/<ProductController>/5
     [HttpPut]
     [Route("api/[controller]/UpdateOrder/{id:int}")]
-    IActionResult Put(int id, [FromBody] OrderModel model)
+    public IActionResult Put(int id, [FromBody] OrderModel model)
     {
         try
         {
@@ -101,7 +102,7 @@ public class ProductController : Controller
     // DELETE api/<ProductController>/5
     [HttpDelete]
     [Route("api/[controller]/DeleteeOrder/{id}")]
-    IActionResult Delete(int id)
+    public IActionResult Delete(int id)
     {
         try
         {
