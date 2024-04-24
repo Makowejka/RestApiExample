@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RestApiExample.Web.EfCore
 {
-    [Table("other")]
+    [Table("order")]
     public class Order
     {
         [Key, Required]

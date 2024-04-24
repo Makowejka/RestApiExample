@@ -5,7 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<EfDataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("Ef_Postgres_Db")));
+builder.Services.AddControllers();
 var app = builder.Build();
+
 
 app.MapControllers();
 app.Run();

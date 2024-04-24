@@ -20,11 +20,11 @@ public class ProductController : Controller
     public IActionResult Get()
     {
         ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-        
+
         try
         {
             IEnumerable<ProductModel> data = _db.GetProducts();
-            
+
             if (!data.Any())
             {
                 type = ApiResponse.ResponseType.NotFound;
@@ -44,7 +44,7 @@ public class ProductController : Controller
     public IActionResult Get(int id)
     {
         ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-        
+
         try
         {
             var data = _db.GetProductById(id);
@@ -64,16 +64,14 @@ public class ProductController : Controller
 
     // POST api/api/<ProductController>
     [HttpPost]
-    [Route("api/[controller]/SaveOrder")]
-    IActionResult Post([FromBody] OrderModel model)
+    IActionResult Post()
     {
         try
         {
             ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-            
-            _db.SaveOrder(model);
-            
-            return Ok(ResponseHandler.GetAppResponse(type, model));
+
+
+            return Ok();
         }
         catch (Exception ex)
         {
@@ -89,9 +87,9 @@ public class ProductController : Controller
         try
         {
             ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-            
+
             _db.SaveOrder(model);
-            
+
             return Ok(ResponseHandler.GetAppResponse(type, model));
         }
         catch (Exception ex)
@@ -108,9 +106,9 @@ public class ProductController : Controller
         try
         {
             ApiResponse.ResponseType type = ApiResponse.ResponseType.Success;
-            
+
             _db.DeleteOrder(id);
-            
+
             return Ok(ResponseHandler.GetAppResponse(type, "Delete Sucessfully"));
         }
         catch (Exception ex)

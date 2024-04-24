@@ -60,25 +60,26 @@ public class DbHelper
                 dbTable.Phone = orderModel.Phone;
                 dbTable.Address = orderModel.Address;
             }
-            else
-            {
-                dbTable!.Phone = orderModel.Phone;
-                dbTable.Address = orderModel.Address;
-                dbTable.Name = orderModel.Name;
-                dbTable.Product = _context.Products.FirstOrDefault(f => f.Id.Equals(orderModel.ProductId));
-
-                _context.Orders.Add(dbTable);
-            }
-
-            _context.SaveChanges();
         }
-    }
+        else
+        {
+            dbTable!.Phone = orderModel.Phone;
+            dbTable.Address = orderModel.Address;
+            dbTable.Name = orderModel.Name;
+            dbTable.Product = _context.Products.FirstOrDefault(f => f.Id.Equals(orderModel.ProductId));
+
+            _context.Orders.Add(dbTable);
+        }
+
+        _context.SaveChanges();
+        }
+
 
     // DELETE
     public void DeleteOrder(int id)
     {
         var order = _context.Orders.FirstOrDefault(d => d.Id.Equals(id));
-        
+
         if (order != null)
         {
             _context.Orders.Remove(order);
