@@ -80,6 +80,21 @@ public class ProductController : Controller
         }
     }
 
+    [HttpPost]
+    [Route("api/[controller]/SaveManyOrders")]
+    public IActionResult AddOrders([FromBody] List<OrderModel> model)
+    {
+        try
+        {
+            _db.SaveManyOrders(model);
+            return Ok("Orders added successfully");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ResponseHandler.GetExceptionResponse(ex));
+        }
+    }
+
     // PUT api/<ProductController>/5
     [HttpPut]
     [Route("api/[controller]/UpdateOrder/{id:int}")]
@@ -101,7 +116,7 @@ public class ProductController : Controller
 
     // DELETE api/<ProductController>/5
     [HttpDelete]
-    [Route("api/[controller]/DeleteeOrder/{id}")]
+    [Route("api/[controller]/DeleteOrder/{id}")]
     public IActionResult Delete(int id)
     {
         try

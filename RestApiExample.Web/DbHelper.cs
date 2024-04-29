@@ -1,6 +1,9 @@
+using Humanizer;
+using Microsoft.EntityFrameworkCore;
 using RestApiExample.Web.EfCore;
+using RestApiExample.Web.Model;
 
-namespace RestApiExample.Web.Model;
+namespace RestApiExample.Web;
 
 public class DbHelper
 {
@@ -48,12 +51,12 @@ public class DbHelper
     // It serves the POST/PUT/PATCH
     public void SaveOrder(OrderModel orderModel)
     {
-        Order dbTable = new Order();
+        Order? dbTable = new Order();
 
         if (orderModel.Id > 0)
         {
             //PUT
-            dbTable = _context.Orders.Where(d => d.Id.Equals(orderModel.Id)).FirstOrDefault();
+            dbTable = _context.Orders.FirstOrDefault(d => d.Id.Equals(orderModel.Id));
 
             if (dbTable != null)
             {
@@ -66,7 +69,7 @@ public class DbHelper
             dbTable!.Phone = orderModel.Phone;
             dbTable.Address = orderModel.Address;
             dbTable.Name = orderModel.Name;
-            dbTable.Product = _context.Products.FirstOrDefault(f => f.Id.Equals(orderModel.ProductId));
+            dbTable.Products = _context.Products.Where(f => f.Id.Equals(orderModel.ProductId)).ToList();
 
             _context.Orders.Add(dbTable);
         }
@@ -74,6 +77,23 @@ public class DbHelper
         _context.SaveChanges();
         }
 
+    public void SaveManyOrders(List<OrderModel> orders)
+    {
+        foreach (var order in orders)
+        {
+            Order dbOrder = new Order
+            {
+                Phone = order.Phone,
+                Address = order.Address,
+                Name = order.Name,
+                Products = _context.Products.Where(p => p.Id == order.ProductId).ToList()
+            };
+
+            _context.Orders.Add(dbOrder);
+        }
+
+        _context.SaveChanges();
+    }
 
     // DELETE
     public void DeleteOrder(int id)

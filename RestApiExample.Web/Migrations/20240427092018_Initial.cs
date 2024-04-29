@@ -28,30 +28,29 @@ namespace RestApiExample.Web.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "other",
+                name: "order",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    ProductId = table.Column<int>(type: "integer", nullable: true),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Address = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_other", x => x.Id);
+                    table.PrimaryKey("PK_order", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_other_product_ProductId",
+                        name: "FK_order_product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_other_ProductId",
-                table: "other",
+                name: "IX_order_ProductId",
+                table: "order",
                 column: "ProductId");
         }
 
@@ -59,7 +58,7 @@ namespace RestApiExample.Web.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "other");
+                name: "order");
 
             migrationBuilder.DropTable(
                 name: "product");

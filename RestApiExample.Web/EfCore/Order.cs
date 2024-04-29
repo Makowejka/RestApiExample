@@ -10,7 +10,7 @@ namespace RestApiExample.Web.EfCore
 
         public int Id { get; set; }
 
-        public virtual Product? Product { get; set; }
+        public virtual List<Product>? Products { get; set; }
 
         public string? Name { get; set; }
 

@@ -11,7 +11,7 @@ using RestApiExample.Web.EfCore;
 namespace RestApiExample.Web.Migrations
 {
     [DbContext(typeof(EfDataContext))]
-    [Migration("20240405093826_Initial")]
+    [Migration("20240427092018_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -41,14 +41,14 @@ namespace RestApiExample.Web.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("other");
+                    b.ToTable("order");
                 });
 
             modelBuilder.Entity("RestApiExample.Web.EfCore.Product", b =>
@@ -80,9 +80,7 @@ namespace RestApiExample.Web.Migrations
                 {
                     b.HasOne("RestApiExample.Web.EfCore.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });
