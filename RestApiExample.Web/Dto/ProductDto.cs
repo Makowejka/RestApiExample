@@ -1,6 +1,6 @@
-namespace RestApiExample.Web.Model;
+namespace RestApiExample.Web.Dto;
 
-public class ProductModel
+public class ProductDto
 {
     public int Id { get; set; }
 

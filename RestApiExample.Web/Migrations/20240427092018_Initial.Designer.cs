@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using RestApiExample.Web.EfCore;
+using RestApiExample.Web.Data;
 
 #nullable disable
 
 namespace RestApiExample.Web.Migrations
 {
-    [DbContext(typeof(EfDataContext))]
+    [DbContext(typeof(DataContext))]
     [Migration("20240427092018_Initial")]
     partial class Initial
     {

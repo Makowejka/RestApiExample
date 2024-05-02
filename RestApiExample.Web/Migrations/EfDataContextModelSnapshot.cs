@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using RestApiExample.Web.EfCore;
+using RestApiExample.Web.Data;
 
 #nullable disable
 
 namespace RestApiExample.Web.Migrations
 {
-    [DbContext(typeof(EfDataContext))]
+    [DbContext(typeof(DataContext))]
     partial class EfDataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RestApiExample.Web.EfCore
+namespace RestApiExample.Web.Entity
 {
     [Table("order")]
     public class Order
@@ -17,5 +17,6 @@ namespace RestApiExample.Web.EfCore
         public string? Address { get; set; }
 
         public string? Phone { get; set; }
+        public int ProductId { get; set; }
     }
 }
