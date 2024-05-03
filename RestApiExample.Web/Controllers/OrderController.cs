@@ -47,4 +47,41 @@ public class OrderController : Controller
 
         }
     }
+
+    [HttpPost]
+    public async Task<ActionResult<OrderDto>> AddAsync([FromBody] OrderDto orderDto)
+    {
+        try
+        {
+            var result = await _orderService.AddAsync(orderDto);
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("{id:int}")]
+
+    public async Task<ActionResult<OrderDto?>?> UpdateAsync(int id, OrderDto orderDto)
+    {
+        try
+        {
+            var result = await _orderService.UpdateAsync(id, orderDto);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
 }

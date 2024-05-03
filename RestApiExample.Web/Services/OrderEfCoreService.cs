@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using RestApiExample.Web.Contract;
 using RestApiExample.Web.Data;
@@ -10,7 +11,7 @@ public class OrderEfCoreService : IOrderService
 {
     private readonly DataContext _context;
 
-    OrderEfCoreService(DataContext context)
+    public OrderEfCoreService(DataContext context)
     {
         _context = context;
     }
@@ -47,5 +48,51 @@ public class OrderEfCoreService : IOrderService
             ProductId = order.ProductId,
             Phone = order.Phone
         };
+    }
+
+    public async Task<OrderDto> AddAsync(OrderDto orderDto)
+    {
+        var orderEfCoreService = new OrderEfCoreService(_context);
+
+        var result = await orderEfCoreService.AddAsync(orderDto);
+
+        return result;
+    }
+
+    public async Task<OrderDto?> UpdateAsync(int id, OrderDto orderDto)
+    {
+        var order = await _context.Orders.FindAsync(id);
+
+        if (order == null)
+        {
+            return null;
+        }
+
+        order.Address = orderDto.Address;
+        order.Name = orderDto.Name;
+        order.Phone = orderDto.Phone;
+
+        return new OrderDto
+        {
+            Address = order.Address,
+            Id = order.Id,
+            Name = order.Name,
+            ProductId = order.ProductId,
+            Phone = order.Phone
+        };
+    }
+
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var order = await _context.Orders.FindAsync(id);
+
+        if (order != null)
+        {
+            _context.Orders.Remove(order);
+        }
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }

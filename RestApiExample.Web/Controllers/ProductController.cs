@@ -2,7 +2,6 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using RestApiExample.Web.Contract;
 using RestApiExample.Web.Dto;
-using RestApiExample.Web.Services;
 
 namespace RestApiExample.Web.Controllers;
 
@@ -45,6 +44,63 @@ public class ProductController : Controller
             }
 
             return Ok(productDto);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ProductDto>?> AddAsync([FromBody]ProductDto productDto)
+    {
+        try
+        {
+            var result = await _productService.AddAsync(productDto);
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPut]
+    [Route("{id:int}")]
+    public async Task<ActionResult<ProductDto>?> UpdateAsync(int id, [FromBody] ProductDto productDto)
+    {
+        try
+        {
+            var result = await _productService.UpdateAsync(id, productDto);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<ActionResult> DeleteAsync(int id)
+    {
+        try
+        {
+            bool deletedProduct = await _productService.DeleteAsync(id);
+
+            if (deletedProduct)
+            {
+                return NoContent();
+            }
+
+            return NotFound();
         }
         catch (Exception ex)
         {

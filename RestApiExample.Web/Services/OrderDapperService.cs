@@ -3,24 +3,24 @@ using RestApiExample.Web.Dto;
 
 namespace RestApiExample.Web.Services;
 
-public class ProductDapperService : IProductService
+public class OrderDapperService : IOrderService
 {
-    public Task<List<ProductDto>> GetAsync()
+    public Task<List<OrderDto>> GetAsyns()
     {
         throw new NotImplementedException();
     }
 
-    public Task<ProductDto?> GetAsync(int id)
+    public Task<OrderDto> GetAsyns(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ProductDto?> AddAsync(ProductDto productDto)
+    public Task<OrderDto> AddAsync(OrderDto orderDto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ProductDto?> UpdateAsync(int id, ProductDto productDto)
+    public Task<OrderDto?> UpdateAsync(int id, OrderDto orderDto)
     {
         throw new NotImplementedException();
     }
