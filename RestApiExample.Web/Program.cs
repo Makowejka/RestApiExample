@@ -10,6 +10,8 @@ builder.Services.AddDbContext<DataContext>(
 
 builder.Services.AddScoped<IProductService, ProductEfCoreService>();
 
+builder.Services.AddScoped<IOrderService, OrderEfCoreService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();

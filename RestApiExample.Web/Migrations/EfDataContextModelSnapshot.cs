@@ -21,7 +21,7 @@ namespace RestApiExample.Web.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("RestApiExample.Web.EfCore.Order", b =>
+            modelBuilder.Entity("RestApiExample.Web.Entity.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,12 +38,15 @@ namespace RestApiExample.Web.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("text");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.ToTable("order");
                 });
 
-            modelBuilder.Entity("RestApiExample.Web.EfCore.Product", b =>
+            modelBuilder.Entity("RestApiExample.Web.Entity.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,14 +76,14 @@ namespace RestApiExample.Web.Migrations
                     b.ToTable("product");
                 });
 
-            modelBuilder.Entity("RestApiExample.Web.EfCore.Product", b =>
+            modelBuilder.Entity("RestApiExample.Web.Entity.Product", b =>
                 {
-                    b.HasOne("RestApiExample.Web.EfCore.Order", null)
+                    b.HasOne("RestApiExample.Web.Entity.Order", null)
                         .WithMany("Products")
                         .HasForeignKey("OrderId");
                 });
 
-            modelBuilder.Entity("RestApiExample.Web.EfCore.Order", b =>
+            modelBuilder.Entity("RestApiExample.Web.Entity.Order", b =>
                 {
                     b.Navigation("Products");
                 });
