@@ -1,16 +1,17 @@
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RestApiExample.Web.Dto;
 
 namespace RestApiExample.Web.Contract;
 
 public interface IOrderService
 {
-    Task<List<OrderDto>> GetAsyns();
+    Task<List<OrderDto>> GetAsync();
 
-    Task<OrderDto> GetAsyns(int id);
+    Task<OrderDto> GetAsync(int id);
 
-    Task<OrderDto> AddAsync(OrderDto orderDto);
+    Task<long> AddAsync(AddOrderDto dto);
 
-    Task<OrderDto?> UpdateAsync(int id, OrderDto orderDto);
+    Task UpdateAsync(int id, OrderDto updateOrderDto);
 
     Task<bool> DeleteAsync(int id);
 }

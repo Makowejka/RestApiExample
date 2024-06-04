@@ -16,22 +16,15 @@ public class OrderEfCoreService : IOrderService
         _context = context;
     }
 
-    public Task<List<OrderDto>> GetAsyns()
+    public Task<List<OrderDto>> GetAsync()
     {
         return _context
             .Orders
-            .Select(x => new OrderDto
-            {
-                Address = x.Address,
-                Id = x.Id,
-                Name = x.Name,
-                ProductId = x.ProductId,
-                Phone = x.Phone
-            })
+            .Select(x => new OrderDto(x.Id, x.ProductId, x.Name, x.Address, x.Phone))
             .ToListAsync();
     }
 
-    public async Task<OrderDto> GetAsyns(int id)
+    public async Task<OrderDto> GetAsync(int id)
     {
         var order = await _context.Orders.FirstOrDefaultAsync(d => d.Id.Equals(id));
 
@@ -40,46 +33,42 @@ public class OrderEfCoreService : IOrderService
             return null!;
         }
 
-        return new OrderDto
+        return new OrderDto(order.Id, order.ProductId, order.Name, order.Address, order.Phone);
+    }
+
+    public async Task<long> AddAsync(AddOrderDto dto)
+    {
+        var order = new Order
         {
-            Id = order.Id,
-            Address = order.Address,
-            Name = order.Name,
-            ProductId = order.ProductId,
-            Phone = order.Phone
+            ProductId = dto.ProductId,
+            Name = dto.Name,
+            Phone = dto.Phone,
+            Address = dto.Address
         };
+
+        _context.Orders.Add(order);
+
+        await _context.SaveChangesAsync();
+
+        return order.Id;
     }
 
-    public async Task<OrderDto> AddAsync(OrderDto orderDto)
+    public async Task UpdateAsync(int id, UpdateOrderDto dto)
     {
-        var orderEfCoreService = new OrderEfCoreService(_context);
-
-        var result = await orderEfCoreService.AddAsync(orderDto);
-
-        return result;
-    }
-
-    public async Task<OrderDto?> UpdateAsync(int id, OrderDto orderDto)
-    {
-        var order = await _context.Orders.FindAsync(id);
+        var order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == id);
 
         if (order == null)
         {
-            return null;
+            throw new NotFoundException($"Order with ID {id} not found!");
         }
 
-        order.Address = orderDto.Address;
-        order.Name = orderDto.Name;
-        order.Phone = orderDto.Phone;
+        order.Address = dto.Address;
+        order.Name = dto.Name;
+        order.Phone = dto.Phone;
 
-        return new OrderDto
-        {
-            Address = order.Address,
-            Id = order.Id,
-            Name = order.Name,
-            ProductId = order.ProductId,
-            Phone = order.Phone
-        };
+        _context.Orders.Update(order);
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> DeleteAsync(int id)
@@ -89,10 +78,10 @@ public class OrderEfCoreService : IOrderService
         if (order != null)
         {
             _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        await _context.SaveChangesAsync();
-
-        return true;
+        return false;
     }
 }

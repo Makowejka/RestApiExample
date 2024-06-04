@@ -20,7 +20,7 @@ public class OrderController : Controller
     {
         try
         {
-            var orderDto = await _orderService.GetAsyns();
+            var orderDto = await _orderService.GetAsync();
 
             return Ok(orderDto);
         }
@@ -37,7 +37,7 @@ public class OrderController : Controller
     {
         try
         {
-            var orderDto = await _orderService.GetAsyns(id);
+            var orderDto = await _orderService.GetAsync(id);
 
             return Ok(orderDto);
         }
@@ -49,11 +49,11 @@ public class OrderController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<OrderDto>> AddAsync([FromBody] OrderDto orderDto)
+    public async Task<ActionResult<OrderDto>> AddAsync([FromBody] AddOrderDto addOrderDto)
     {
         try
         {
-            var result = await _orderService.AddAsync(orderDto);
+            var result = await _orderService.AddAsync(addOrderDto);
 
             return Ok(result);
         }
@@ -66,18 +66,32 @@ public class OrderController : Controller
     [HttpPut]
     [Route("{id:int}")]
 
-    public async Task<ActionResult<OrderDto?>?> UpdateAsync(int id, OrderDto orderDto)
+    public async Task UpdateAsync(int id, OrderDto updateOrderDto)
     {
         try
         {
-            var result = await _orderService.UpdateAsync(id, orderDto);
+            await _orderService.UpdateAsync(id, updateOrderDto);
+        }
+        catch (Exception ex)
+        {
+            StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+        }
+    }
 
-            if (result == null)
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<ActionResult> DeleteAsync(int id)
+    {
+        try
+        {
+            bool deleteOrder = await _orderService.DeleteAsync(id);
+
+            if (deleteOrder)
             {
-                return null;
+                return NoContent();
             }
 
-            return Ok();
+            return NotFound();
         }
         catch (Exception ex)
         {

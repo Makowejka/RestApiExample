@@ -15,12 +15,12 @@ public class ProductDapperService : IProductService
         throw new NotImplementedException();
     }
 
-    public Task<ProductDto?> AddAsync(ProductDto productDto)
+    public Task<int> AddAsync(ProductDto productDto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ProductDto?> UpdateAsync(int id, ProductDto productDto)
+    public Task UpdateAsync(int id, ProductDto updateProductDto)
     {
         throw new NotImplementedException();
     }

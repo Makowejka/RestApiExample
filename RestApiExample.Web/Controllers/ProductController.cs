@@ -52,11 +52,11 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<ProductDto>?> AddAsync([FromBody]ProductDto productDto)
+    public async Task<ActionResult<ProductDto>?> AddAsync([FromBody]ProductDto addProductDto)
     {
         try
         {
-            var result = await _productService.AddAsync(productDto);
+            var result = await _productService.AddAsync(addProductDto);
 
             return Ok(result);
         }
@@ -68,22 +68,15 @@ public class ProductController : Controller
 
     [HttpPut]
     [Route("{id:int}")]
-    public async Task<ActionResult<ProductDto>?> UpdateAsync(int id, [FromBody] ProductDto productDto)
+    public async Task UpdateAsync(int id, [FromBody] ProductDto updateProductDto)
     {
         try
         {
-            var result = await _productService.UpdateAsync(id, productDto);
-
-            if (result == null)
-            {
-                return null;
-            }
-
-            return Ok();
+            await _productService.UpdateAsync(id, updateProductDto);
         }
         catch (Exception ex)
         {
-            return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
         }
     }
 

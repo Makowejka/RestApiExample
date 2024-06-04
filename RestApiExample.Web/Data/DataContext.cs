@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using RestApiExample.Web.Dto;
 using RestApiExample.Web.Entity;
 
 namespace RestApiExample.Web.Data;
 
-public class DataContext : DbContext
+public class DataContext(DbContextOptions<DataContext> options) : DbContext(options)
 {
-    public DataContext(DbContextOptions<DataContext> options): base(options) {}
+    public DbSet<Product> Products { get; set; } = null!;
 
-
-    public DbSet<Product> Products { get; set; }
-
-    public DbSet<Order> Orders { get; set; }
+    public DbSet<Order> Orders { get; set; } = null!;
 }

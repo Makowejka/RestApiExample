@@ -12,7 +12,6 @@ namespace RestApiExample.Web.Services;
 public class ProductEfCoreService : IProductService
 {
     private readonly DataContext _context;
-    private IProductService? _productServiceImplementation;
 
     public ProductEfCoreService(DataContext context) => _context = context;
 
@@ -20,15 +19,8 @@ public class ProductEfCoreService : IProductService
     {
         return _context
             .Products
-            .Select(x => new ProductDto
-                {
-                    Brand = x.Brand,
-                    Id = x.Id,
-                    Name = x.Name,
-                    Price = x.Price,
-                    Size = x.Size
-                }
-            ).ToListAsync();
+            .Select(x => new ProductDto(x.Id, x.Name, x.Brand, x.Size, x.Price))
+            .ToListAsync();
     }
 
     public async Task<ProductDto?> GetAsync(int id)
@@ -40,57 +32,56 @@ public class ProductEfCoreService : IProductService
             return null;
         }
 
-        return new ProductDto
-        {
-            Brand = product.Brand,
-            Id = product.Id,
-            Name = product.Name,
-            Price = product.Price,
-            Size = product.Size
-        };
+        return new ProductDto(product.Id, product.Name, product.Brand, product.Size, product.Price);
     }
 
-    public async Task<ProductDto?> AddAsync(ProductDto productDto)
+    public async Task<int> AddAsync(ProductDto addProductDto)
     {
-        var productEfCoreService = new ProductEfCoreService(_context);
+        var product = new Product
+        {
+            Name = addProductDto.Name,
+            Brand = addProductDto.Brand,
+            Size = addProductDto.Size,
+            Price = addProductDto.Price
+        };
 
-        var result = await productEfCoreService.AddAsync(productDto);
+        _context.Products.Add(product);
 
-        return result;
+        await _context.SaveChangesAsync();
+
+        return product.Id;
     }
 
-    public async Task<ProductDto?> UpdateAsync(int id, ProductDto productDto)
+    public async Task UpdateAsync(int id, ProductDto updateProductDto)
     {
         var existingProduct = await _context.Products.FindAsync(id);
 
         if (existingProduct == null)
         {
-            return null;
+            throw new NotFoundException($"Product with ID {id} not found!");
         }
 
-        existingProduct.Brand = productDto.Brand;
-        existingProduct.Name = productDto.Name;
-        existingProduct.Size = productDto.Size;
-        existingProduct.Price = productDto.Size;
+        existingProduct.Brand = updateProductDto.Brand;
+        existingProduct.Name = updateProductDto.Name;
+        existingProduct.Size = updateProductDto.Size;
+        existingProduct.Price = updateProductDto.Size;
 
-        return new ProductDto
-        {
-            Brand = existingProduct.Brand,
-            Id = existingProduct.Id,
-            Name = existingProduct.Name,
-            Price = existingProduct.Price,
-            Size = existingProduct.Size
-        };
+        _context.Products.Update(existingProduct);
+
+        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
         var deletedProduct = await _context.Products.FindAsync(id);
 
-        if (deletedProduct != null) _context.Products.Remove(deletedProduct);
+        if (deletedProduct != null)
+        {
+            _context.Products.Remove(deletedProduct);
+            await _context.SaveChangesAsync();
+            return true;
+        }
 
-        await _context.SaveChangesAsync();
-
-        return true;
+        return false;
     }
 }

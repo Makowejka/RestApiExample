@@ -5,22 +5,22 @@ namespace RestApiExample.Web.Services;
 
 public class OrderDapperService : IOrderService
 {
-    public Task<List<OrderDto>> GetAsyns()
+    public Task<List<OrderDto>> GetAsync()
     {
         throw new NotImplementedException();
     }
 
-    public Task<OrderDto> GetAsyns(int id)
+    public Task<OrderDto> GetAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<OrderDto> AddAsync(OrderDto orderDto)
+    public Task<long> AddAsync(AddOrderDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<OrderDto?> UpdateAsync(int id, OrderDto orderDto)
+    public Task UpdateAsync(int id, OrderDto updateOrderDto)
     {
         throw new NotImplementedException();
     }
